@@ -1,0 +1,84 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: 214 215 218;
+  --shell: 238 238 238;
+  --surface: 255 255 255;
+  --surface-2: 245 245 245;
+  --ink: 17 19 17;
+  --muted: 117 122 117;
+  --line: 229 230 229;
+  --primary: 14 61 30;
+  --primary-fg: 255 255 255;
+  --accent: 184 242 107;
+  --accent-fg: 14 61 30;
+  --gold: 214 146 18;
+  --rust: 232 74 56;
+  --ok: 30 150 66;
+  color-scheme: light;
+}
+.dark {
+  --bg: 8 10 8;
+  --shell: 16 19 16;
+  --surface: 26 30 26;
+  --surface-2: 34 39 34;
+  --ink: 238 240 236;
+  --muted: 150 156 148;
+  --line: 45 51 45;
+  --primary: 44 104 60;
+  --primary-fg: 255 255 255;
+  --accent: 184 242 107;
+  --accent-fg: 14 61 30;
+  --gold: 232 170 50;
+  --rust: 240 100 78;
+  --ok: 80 190 120;
+  color-scheme: dark;
+}
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; }
+  body { @apply bg-bg font-sans text-ink antialiased; }
+  h1, h2, h3 { @apply font-display tracking-tight; }
+  :focus-visible { outline: 2px solid rgb(var(--primary)); outline-offset: 2px; }
+  .dark :focus-visible { outline-color: rgb(var(--accent)); }
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-thumb { background: rgb(var(--line)); border-radius: 8px; }
+  input[type='number']::-webkit-inner-spin-button { display: none; }
+}
+
+@layer components {
+  .card { @apply rounded-3xl bg-surface; }
+  .tile { @apply rounded-2xl bg-surface2; }
+  .input {
+    @apply w-full rounded-xl border border-line bg-surface2 px-3.5 py-2.5 text-sm text-ink placeholder:text-muted/70
+      focus:border-primary focus:bg-surface focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:cursor-not-allowed disabled:opacity-60;
+  }
+  .dark .input:focus { @apply border-accent ring-accent/25; }
+  .input-error { @apply border-rust focus:border-rust focus:ring-rust/25; }
+  .label { @apply mb-1.5 block text-sm font-medium text-ink; }
+  .num { @apply font-display tabular-nums; }
+  .th { @apply whitespace-nowrap px-4 py-2.5 text-left text-xs font-medium text-muted; }
+  .td { @apply px-4 py-3 text-sm; }
+  .tr { @apply border-t border-line; }
+}
+
+/* Woven look for fabric colour tiles (replaces product photos) */
+.weave {
+  background-image:
+    repeating-linear-gradient(0deg, rgb(0 0 0 / 0.07) 0 1px, transparent 1px 4px),
+    repeating-linear-gradient(90deg, rgb(255 255 255 / 0.12) 0 1px, transparent 1px 4px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+/* Receipts print alone: a clone is placed in #print-root (see components/sales/Receipt.jsx) */
+#print-root { display: none; }
+@media print {
+  body { background: #fff !important; }
+  body.print-receipt > *:not(#print-root) { display: none !important; }
+  body.print-receipt #print-root { display: block; width: 80mm; margin: 0 auto; }
+}
